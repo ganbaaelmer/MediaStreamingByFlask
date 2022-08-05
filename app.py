@@ -19,7 +19,6 @@ RECORD_SECONDS = 5
 audio1 = pyaudio.PyAudio()
  
 
-
 def genHeader(sampleRate, bitsPerSample, channels):
     datasize = 2000*10**6
     o = bytes("RIFF",'ascii')                                               # (4byte) Marks file as RIFF
@@ -39,7 +38,7 @@ def genHeader(sampleRate, bitsPerSample, channels):
 
 @app.route('/audio')
 def audio():
-    # start Recording
+    # start audio Recording
     def sound():
 
         CHUNK = 1024
