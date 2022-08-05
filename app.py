@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 
-############ Audio ############
+############ Audio recording section ############
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
@@ -67,7 +67,7 @@ def audio():
 
 
 
-############ Video ############
+############ Video recording section ############
 
 video_camera = None
 global_frame = None
