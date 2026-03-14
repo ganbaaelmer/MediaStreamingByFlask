@@ -1,0 +1,4 @@
+flask>=3.0,<4.0
+opencv-python>=4.8,<5.0
+pyaudio>=0.2.13,<1.0
+numpy>=1.24,<2.0

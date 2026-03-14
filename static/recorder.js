@@ -1,48 +1,35 @@
-var buttonRecord = document.getElementById("record");
-var buttonStop = document.getElementById("stop");
+"use strict";
 
-buttonStop.disabled = true;
+const btnRecord = document.getElementById("record");
+const btnStop = document.getElementById("stop");
+const downloadLink = document.getElementById("download");
 
-buttonRecord.onclick = function() {
-    // var url = window.location.href + "record_status";
-    buttonRecord.disabled = true;
-    buttonStop.disabled = false;
-    
-    // disable download link
-    var downloadLink = document.getElementById("download");
-    downloadLink.text = "";
-    downloadLink.href = "";
+btnStop.disabled = true;
 
-    // XMLHttpRequest
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            // alert(xhr.responseText);
-        }
-    }
-    xhr.open("POST", "/record_status");
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify({ status: "true" }));
-};
+async function setRecordStatus(status) {
+  const response = await fetch("/record_status", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+  return response.json();
+}
 
-buttonStop.onclick = function() {
-    buttonRecord.disabled = false;
-    buttonStop.disabled = true;    
+btnRecord.addEventListener("click", async () => {
+  btnRecord.disabled = true;
+  btnStop.disabled = false;
+  downloadLink.textContent = "";
+  downloadLink.href = "";
 
-    // XMLHttpRequest
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            // alert(xhr.responseText);
+  await setRecordStatus("true");
+});
 
-            // enable download link
-            var downloadLink = document.getElementById("download");
-            downloadLink.text = "Download Video";
-            downloadLink.href = "/static/video.avi";
-        }
-    }
-    xhr.open("POST", "/record_status");
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify({ status: "false" }));
-};
+btnStop.addEventListener("click", async () => {
+  btnRecord.disabled = false;
+  btnStop.disabled = true;
 
+  await setRecordStatus("false");
+
+  downloadLink.textContent = "Download Video";
+  downloadLink.href = "/static/video.avi";
+});
